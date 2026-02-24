@@ -1,11 +1,11 @@
-# 🧠 Explain Like My Brain Works
+# Explain Like My Brain Works
 **AMD Slingshot Hackathon 2026 — AI in Education & Skilling**
 
 > An AI learning assistant that explains any topic in your preferred style, then checks understanding with a short quiz.
 
 ---
 
-## ⚡ Quick Start
+## Quick Start
 
 ### 1. Clone / download the project
 ```bash
@@ -38,7 +38,7 @@ The app will open automatically at **http://localhost:8501**
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```
 .
@@ -49,7 +49,7 @@ The app will open automatically at **http://localhost:8501**
 
 ---
 
-## 🔌 Enabling Real AI (Production Mode)
+## Enabling Real AI (Production Mode)
 
 The prototype ships with rich mock responses so it works out-of-the-box.
 To connect real Claude AI:
@@ -72,9 +72,9 @@ To connect real Claude AI:
    client = anthropic.Anthropic()
 
    style_prompts = {
-       "Visual 🎨": "Use visual metaphors, diagrams in ASCII, and structured layout.",
-       "Step-by-Step 🪜": "Break it into clearly numbered sequential steps.",
-       "Real-life Analogy 🌍": "Use a memorable real-world analogy a student can relate to.",
+       "Visual ": "Use visual metaphors, diagrams in ASCII, and structured layout.",
+       "Step-by-Step ": "Break it into clearly numbered sequential steps.",
+       "Real-life Analogy ": "Use a memorable real-world analogy a student can relate to.",
    }
 
    prompt = f"""Explain '{topic}' to a student using this style: {style_prompts[style]}.
@@ -92,7 +92,7 @@ To connect real Claude AI:
 
 ---
 
-## 🎯 Features
+## Features
 
 | Feature | Status |
 |---|---|
@@ -104,16 +104,16 @@ To connect real Claude AI:
 | Per-question feedback with explanation | ✅ |
 | Score summary with encouragement | ✅ |
 | Session state (no page reloads) | ✅ |
-| Real Claude AI integration | 🔌 plug-in ready |
+| Real Claude AI integration | plug-in ready |
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 - **Python 3.10+**
 - **Streamlit** — UI framework
-- **Anthropic Claude** *(optional, for production)*
+
 
 ---
 
-*Built with ❤️ for AMD Slingshot Hackathon 2026*
+*Built for AMD Slingshot Hackathon 2026*
