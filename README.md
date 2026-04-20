@@ -116,4 +116,4 @@ To connect real Claude AI:
 
 ---
 
-*Built for AMD Slingshot Hackathon 2026*
+
