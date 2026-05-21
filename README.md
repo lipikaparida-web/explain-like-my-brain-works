@@ -1,119 +1,91 @@
-# Explain Like My Brain Works
-**AMD Slingshot Hackathon 2026 — AI in Education & Skilling**
+## Agent-orchestrator
+A modular AI agent that uses LLM reasoning to select and execute tools dynamically in real time — demonstrating tool-calling, structured JSON outputs, and autonomous agent orchestration.
+Built with Groq for fast LLM inference.
 
-> An AI learning assistant that explains any topic in your preferred style, then checks understanding with a short quiz.
-
----
-
-## Quick Start
-
-### 1. Clone / download the project
-```bash
-git clone <your-repo-url>
-cd explain-like-my-brain-works
-```
-
-### 2. Create a virtual environment (recommended)
-```bash
-python -m venv venv
-
-# macOS / Linux
-source venv/bin/activate
-
-# Windows
-venv\Scripts\activate
-```
-
-### 3. Install dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Run the app
-```bash
-streamlit run app.py
-```
-
-The app will open automatically at **http://localhost:8501**
-
----
-
-## Project Structure
-
-```
-.
-├── app.py            ← Main Streamlit application
-├── requirements.txt  ← Python dependencies
-└── README.md         ← This file
-```
-
----
-
-## Enabling Real AI (Production Mode)
-
-The prototype ships with rich mock responses so it works out-of-the-box.
-To connect real Claude AI:
-
-1. Install the Anthropic SDK:
-   ```bash
-   pip install anthropic
-   ```
-
-2. Get your API key from https://console.anthropic.com
-
-3. Export it as an environment variable:
-   ```bash
-   export ANTHROPIC_API_KEY="sk-ant-..."
-   ```
-
-4. In `app.py`, replace the body of `get_explanation()` with:
-   ```python
-   import anthropic
-   client = anthropic.Anthropic()
-
-   style_prompts = {
-       "Visual ": "Use visual metaphors, diagrams in ASCII, and structured layout.",
-       "Step-by-Step ": "Break it into clearly numbered sequential steps.",
-       "Real-life Analogy ": "Use a memorable real-world analogy a student can relate to.",
-   }
-
-   prompt = f"""Explain '{topic}' to a student using this style: {style_prompts[style]}.
-   Keep the explanation clear, engaging, and under 300 words."""
-
-   response = client.messages.create(
-       model="claude-opus-4-6",
-       max_tokens=800,
-       messages=[{"role": "user", "content": prompt}]
-   )
-   return response.content[0].text
-   ```
-
-5. Similarly update `get_quiz()` to ask Claude to return JSON quiz questions.
-
----
+## What This Does
+Most AI demos just call an LLM and print the response. This project goes a step further: the LLM decides which tool to use, executes it, and returns a structured result — the same core loop behind systems like AutoGPT, LangChain agents, and OpenAI function calling.
+User Input → LLM Agent → Tool Selection → Tool Execution → Structured Output
 
 ## Features
 
-| Feature | Status |
-|---|---|
-| Topic input | ✅ |
-| Learning style selector (3 styles) | ✅ |
-| Personalized explanation generation | ✅ (mock) |
-| Quiz generation (3 MCQs) | ✅ (mock) |
-| Answer selection UI | ✅ |
-| Per-question feedback with explanation | ✅ |
-| Score summary with encouragement | ✅ |
-| Session state (no page reloads) | ✅ |
-| Real Claude AI integration | plug-in ready |
+LLM-driven intent understanding and tool selection
+Dynamic tool dispatch at runtime
+Structured JSON outputs for every response
+Retry mechanism for robustness on transient failures
+Modular design — add new tools in tools.py without touching agent logic
+Simple CLI interface
 
----
+
+## Project Structure
+agent-orchestrator/
+├── agent.py      # Core agent logic — LLM calls + tool decision making
+├── tools.py      # Tool implementations (calculator, weather)
+├── utils.py      # Retry mechanism and helpers
+├── main.py       # CLI entry point
+├── .env.example
+└── requirements.txt
+
+## Setup
+1. Clone the repository
+bashgit clone https://github.com/lipikaparida-web/agent-orchestrator.git
+cd agent-orchestrator
+2. Create a virtual environment
+bashpython -m venv venv
+source venv/bin/activate        # macOS / Linux
+venv\Scripts\activate           # Windows
+3. Install dependencies
+bashpip install -r requirements.txt
+4. Add your API key
+bashcp .env.example .env
+Edit .env:
+envGROQ_API_KEY=your_groq_api_key_here
+Get a free key at console.groq.com.
+5. Run the agent
+bashpython main.py
+
+## Example Interactions
+Calculator tool
+> Input:  2 + 3 * 10
+  Output: 32
+Weather tool
+> Input:  weather in Chennai
+  Output:
+  {
+    "city": "Chennai",
+    "temperature": "30°C",
+    "condition": "Sunny"
+  }
+
+## How It Works
+
+User enters a natural language query via CLI
+The LLM analyzes the intent and selects the appropriate tool
+The agent calls that tool with extracted parameters
+The result is returned as structured JSON
+If the call fails, the retry mechanism in utils.py re-attempts before surfacing an error
+
+The agent loop in agent.py keeps the LLM reasoning and tool execution cleanly separated — the LLM never directly executes anything, it only decides.
+
+Available Tools
+ToolTriggerDescriptioncalculatorMath expressionsEvaluates arithmetic safelyweather"weather in [city]"Returns mock weather for any city
+Adding a new tool takes ~10 lines in tools.py — no changes needed elsewhere.
+
+## Roadmap
+
+ Web search tool
+ File / document reader tool
+ Conversational memory across turns
+ Multi-step chain-of-thought execution
+ Deploy as a REST API
+
 
 ## Tech Stack
 
-- **Python 3.10+**
-- **Streamlit** — UI framework
+Python 3.10+
+Groq API — fast LLM inference (LLaMA 3 / Mixtral)
+python-dotenv — credential management
 
 
----
+## Author
 
-
+**Lipika Parida** — [GitHub](https://github.com/lipikaparida-web) · [LinkedIn](https://www.linkedin.com/in/lipikaparida3/)
